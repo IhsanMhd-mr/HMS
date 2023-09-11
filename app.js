@@ -18,8 +18,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 //  API routes
-app.use('/devs', require('./routes/dev.js'));
-app.use('/projects', require('./routes/projects.js'));
+// app.use('/devs', require('./routes/dev.js'));
+// app.use('/projects', require('./routes/projects.js'));
 app.use('/clients', require('./routes/clients.js'));
 
 
