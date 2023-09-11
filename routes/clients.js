@@ -9,7 +9,7 @@ console.log("clients route")
 
 router.post('/register',jwt.validateToken, clientController.register);
 // router.put('/img/:clientId',upload.single('imgFile'), imageController.imgUpload);
-// router.get('/list', clientController.getAll);
+router.get('/list', clientController.getAll);
 // router.get('/byName',clientController.getClientByName)
 // router.get('/byId/:clientId', clientController.getClientById);
 // router.put('/editclient/:clientId',jwt.validateToken, clientController.editClient);

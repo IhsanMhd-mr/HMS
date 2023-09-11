@@ -1,6 +1,7 @@
 const table_name = "clients";
+const pool = require("../config/db_server")
 
-// Handle user registration
+// Handle client registration
 exports.registerClient = async (Client) => {
     try {
         console.log('before query')
@@ -26,5 +27,21 @@ exports.registerClient = async (Client) => {
         }
         
         return { success: false, message: 'An error occurred during client registration :'+ error };
+    }
+};
+
+
+// Get All
+exports.getAllClients = async () => {
+    // filtered coulums
+        console.log('getall query')
+    const query = `SELECT *  FROM ${table_name}`; 
+    try {
+        console.log('getall query')
+        const [results] = await pool.query(query);
+        return results;
+    } catch (error) {
+        console.error('Error fetching all Patinets:', error.message);
+        throw error;
     }
 };

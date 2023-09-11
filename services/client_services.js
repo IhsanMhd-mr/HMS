@@ -8,3 +8,11 @@ exports.register =  async (Client) => {
         throw(error);
     }
 }
+exports.getAllClients =  async (Client) => {
+    try{
+        const result= await clients_query.getAllClients(Client);
+        return{ message: result.message }
+    } catch (error) {
+        throw(error);
+    }
+}
