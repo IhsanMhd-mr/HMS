@@ -1,6 +1,8 @@
+const { randomUUID } = require("crypto");
+
 class Client {
-    constructor(client_id,fname,lname,phone_no,desc,pro_pic,) {
-        this.client_id = client_id;
+    constructor(fname,lname,email,phone_no,desc,pro_pic,) {
+        // this.client_id = randomUUID;
         this.fname = fname;
         this.lname = lname;
         this.email = email;
