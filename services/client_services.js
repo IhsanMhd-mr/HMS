@@ -37,7 +37,7 @@ const Client = function (ClientData) {
 
 Client.createClient = async (Client) => {
   try {
-    const addResults = await clients_query.addClient(Client);
+    const addResults = await clients_query.registerClient(Client);
     console.log(addResults,"results added");
     return { message: "Client Created successfully" };
   } catch (error) {
