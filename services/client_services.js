@@ -1,11 +1,11 @@
 const clients_query = require('../repo/clients_query');
-const rep_query = require('../repo/rep_query.js');
-const jwt = require('../config/JWT.js');
-const cookieParser = require('cookie-parser');
+// const clients_query = require('../repo/clients_query.js');
+// const jwt = require('../config/JWT.js');
+// const cookieParser = require('cookie-parser');
 const express = require('express');
 const app = express();
 
-app.use(cookieParser());
+// app.use(cookieParser());
 // class Client {
 //   constructor(ClientData) {
 //     this.patientId = ClientData.patientId;
@@ -37,7 +37,7 @@ const Client = function (ClientData) {
 
 Client.createClient = async (Client) => {
   try {
-    const addResults = await rep_query.addClient(Client);
+    const addResults = await clients_query.addClient(Client);
     console.log(addResults,"results added");
     return { message: "Client Created successfully" };
   } catch (error) {
@@ -48,11 +48,11 @@ Client.createClient = async (Client) => {
 
 Client.editClient = async (clientId,Client) => {
   try {
-    const existingClient = await rep_query.getClientById(clientId);
+    const existingClient = await clients_query.getClientById(clientId);
     console.log(existingClient,"existingClient")
     if (existingClient ) {
       console.log(Client,"puuuuuuuuuuuuuuuuuuuuuuuuuunnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnddddddddddddddddddddddddaaaaaaaaaaaaa")
-      await rep_query.updateClientById(clientId,Client); // Check query ==>>>
+      await clients_query.updateClientById(clientId,Client); // Check query ==>>>
       return { message: "Client Updated Successfully" };
     } else {
       return { message: "Patient not found!" };
@@ -65,10 +65,10 @@ Client.editClient = async (clientId,Client) => {
 
 Client.deleteClient = async (clientId) => {
     try {
-      const existingClient = await rep_query.getClientById(clientId);
+      const existingClient = await clients_query.getClientById(clientId);
       console.log(existingClient);
       if (existingClient) {
-        await rep_query.deleteClient(clientId);
+        await clients_query.deleteClient(clientId);
         return { message: "Client Deleted Successfully" };
       }else{
         return { message: "Client not found!" };
@@ -78,32 +78,41 @@ Client.deleteClient = async (clientId) => {
     }
   };
 
-Client.deleteAllClients = async (clientId) => {
-    try {
-      const existingClient = await rep_query.getClientById(clientId);
-      if (existingClient) {
-        await rep_query.deleteAllClients(clientId);
-        return { message: "Clients Deleted Successfully" };
-      }else{
-        return { message: "Clients not found!" };
-      }
-    } catch (error) {
-      throw error;
-    }
-  };
+// Client.deleteAllClients = async (clientId) => {
+//     try {
+//       const existingClient = await clients_query.getClientById(clientId);
+//       if (existingClient) {
+//         await clients_query.deleteAllClients(clientId);
+//         return { message: "Clients Deleted Successfully" };
+//       }else{
+//         return { message: "Clients not found!" };
+//       }
+//     } catch (error) {
+//       throw error;
+//     }
+//   };
 // list of clients
-Client.getClientByPatientId = async (PatientId) => {
-    try {
-      const existingClients = await rep_query.getClientByPatientId(PatientId);
-      return existingClients;
-    } catch (error) {
-      throw error;
-    }
-  };
+// Client.getClientByPatientId = async (PatientId) => {
+//     try {
+//       const existingClients = await clients_query.getClientByPatientId(PatientId);
+//       return existingClients;
+//     } catch (error) {
+//       throw error;
+//     }
+//   };
 // one client by specific client id
 Client.getClientById = async (clientId) => {
     try {
-      const existingClients = await rep_query.getClientById(clientId);
+      const existingClients = await clients_query.getClientById(clientId);
+      return existingClients;
+    } catch (error) {
+       throw error;
+    }
+};
+Client.getAllClients = async () => {
+    try {
+      const existingClients = await clients_query.getAllClients();
+      console.log(existingClients.results,"cccccccccccccccccccccc")
       return existingClients;
     } catch (error) {
        throw error;

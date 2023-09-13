@@ -1,22 +1,25 @@
 const Client = require('../services/client_services');
+const cloudinary = require('cloudinary')
+console.log("llllllll")
+// require('../lib/cloudinary')
 
-exports.register = async (req,res) => {
-    Client = req.body;
-    try{
-        const result = await client_query.register(Client);
-        res.status(200).json({ message: result.message })
-    } catch (error) {
-        res.status(500).json({error:"Internal Server Error"})
-    }
-}
-exports.createClient = async function (req, res, next) {
+// exports.register = async (req,res) => {
+//     Client = req.body;
+//     try{
+//         const result = await Client.register(Client);
+//         res.status(200).json({ message: result.message })
+//     } catch (error) {
+//         res.status(500).json({error:"Internal Server Error"})
+//     }
+// }
+exports.register = async function (req, res, next) {
     
     console.log(req.file.path)
   
     try {
       const imgUpload = await cloudinary.uploader.upload(
         req.file.path,
-        { folder: "report_docs" }
+        { folder: "client_docs" }
       );
       console.log(imgUpload.secure_url);
   
@@ -51,8 +54,8 @@ exports.createClient = async function (req, res, next) {
 //  Handle get list of clients 
 exports.getAll = async (req,res) => {
     try{
-        const result = await client_query.getAllClients();
-        res.status(200).json({ message: result.message })
+        const result = await Client.getAllClients();
+        res.status(200).json({ message: result.message,result:result.results })
     } catch (error) {
         res.status(500).json({error:"Internal Server Error"})
     }
@@ -64,7 +67,7 @@ exports.getClientById = async (req, res) => {
 
     try {
         // console.log('req id',userId)
-        const patient = await client_query.getClientById(clientId);
+        const patient = await Client.getClientById(clientId);
         if (!patient) {
             return res.status(404).json({ error: "User not found" });
         }else
@@ -80,7 +83,7 @@ exports.getClientById = async (req, res) => {
 // exports.getClientByName = async (req,res) => {
 //     const keyword = req.body.keyword;
 //     try{
-//         const patients = await client_query.getByName(keyword);
+//         const patients = await Client.getByName(keyword);
 //         if(!patients){
 //             return res.status(404).json({ error: "patients not found "});
 //         }else{res.status(200).json(patients);}
@@ -101,14 +104,14 @@ exports.editClient = async (req, res) => {
     // let Client1 = req.body;
 
     let {patient1Id, ...Client1} = req.body;
-    const existingRecord = await client_query.getClientById(clientId); 
+    const existingRecord = await Client.getClientById(clientId); 
     let Client = Client1;
     // console.log(existingRecord.clientId,">>>>>>>>>>>>>>>>>>>>>>DDDDDDDDDDDDDDDD")
 
     if(parseInt(clientId)===parseInt(existingRecord.clientId)){
         try {
-            const result = await client_query.updateClient(clientId,Client);
-            let updatedClient = await client_query.getClientById(clientId);
+            const result = await Client.updateClient(clientId,Client);
+            let updatedClient = await Client.getClientById(clientId);
             res.status(200).json({ message: result.message,updatedClient });
         } catch (error) {
             console.error("Error updating user:");
@@ -123,7 +126,7 @@ exports.editClient = async (req, res) => {
 exports.deleteClient = async (req, res) => {
     let clientId = req.params.clientId;
     
-    const existingRecord = await client_query.getClientById(clientId); 
+    const existingRecord = await Client.getClientById(clientId); 
 
     if (clientId === null){
         console.log("clientId = Undefoned"); 
@@ -131,7 +134,7 @@ exports.deleteClient = async (req, res) => {
     }else if (clientId == parseInt(existingRecord.clientId)){
         console.log("clientId is defoned",clientId)
         try {
-            const result = await client_query.deleteClient(clientId);
+            const result = await Client.deleteClient(clientId);
             res.status(200).json({ message: result.message });
         } catch (error) {
             console.error("Error deleting user:", error);
