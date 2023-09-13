@@ -17,7 +17,6 @@ exports.getAll = async (req,res) => {
         res.status(500).json({error:"Internal Server Error"})
     }
 }
-// 
 
 // Handle fetching a patient by ID
 exports.getClientById = async (req, res) => {
@@ -38,19 +37,19 @@ exports.getClientById = async (req, res) => {
     
 };
 
-exports.getClientByName = async (req,res) => {
-    const keyword = req.body.keyword;
-    try{
-        const patients = await client_query.getByName(keyword);
-        if(!patients){
-            return res.status(404).json({ error: "patients not found "});
-        }else{res.status(200).json(patients);}
+// exports.getClientByName = async (req,res) => {
+//     const keyword = req.body.keyword;
+//     try{
+//         const patients = await client_query.getByName(keyword);
+//         if(!patients){
+//             return res.status(404).json({ error: "patients not found "});
+//         }else{res.status(200).json(patients);}
 
-    }catch(error){
-        console.error("Error getting user by ID:", error);
-        res.status(500).json({ error: "Internal Server Error in fetching" });
-    }
-};
+//     }catch(error){
+//         console.error("Error getting user by ID:", error);
+//         res.status(500).json({ error: "Internal Server Error in fetching" });
+//     }
+// };
 
 
 
@@ -68,7 +67,7 @@ exports.editClient = async (req, res) => {
 
     if(parseInt(clientId)===parseInt(existingRecord.clientId)){
         try {
-            const result = await client_query.editClient(clientId,Client);
+            const result = await client_query.updateClient(clientId,Client);
             let updatedClient = await client_query.getClientById(clientId);
             res.status(200).json({ message: result.message,updatedClient });
         } catch (error) {

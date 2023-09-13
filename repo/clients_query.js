@@ -128,9 +128,9 @@ exports.updateClientPicById = async (clientId, pro_pic) => {
 };
 
 // Delete by Client Id
-exports.deleteUser = async (clientId) => {
+exports.deleteClient = async (clientId) => {
     
-    // const ClientId = await exports.getClientByEmail(req, res); // Call getUserByEmail function to get the ClientId
+    // const ClientId = await exports.getClientByEmail(req, res); // Call getClientByEmail function to get the ClientId
     // console.log(ClientId);
 
     const query = `DELETE FROM ${table_name} WHERE client_id = ?`;

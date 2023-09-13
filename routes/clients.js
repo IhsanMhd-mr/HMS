@@ -8,11 +8,11 @@ const jwt = require('../config/JWT.js');
 console.log("clients route")
 
 router.post('/register', clientController.register);
-// router.post('/register',jwt.validateToken, clientController.register);
 // router.put('/img/:clientId',upload.single('imgFile'), imageController.imgUpload);
 router.get('/', clientController.getAll);
 router.get('/byId/:clientId', clientController.getClientById);
-router.put('/editclient/:clientId',jwt.validateToken, clientController.editClient);
-router.delete('/deleteclient/:clientId',jwt.validateToken, clientController.deleteClient);
+router.put('/editclient/:clientId', clientController.editClient);
+// router.delete('/deleteclient/:clientId',jwt.validateToken, clientController.deleteClient);
 
 module.exports = router;
+
