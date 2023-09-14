@@ -1,6 +1,9 @@
+const { error } = require('console');
 const Client = require('../services/client_services');
 const cloudinary = require('cloudinary')
-console.log("llllllll")
+require('../lib/cloudinary')
+
+// console.log("llllllll")
 // require('../lib/cloudinary')
 
 // exports.register = async (req,res) => {
@@ -12,9 +15,11 @@ console.log("llllllll")
 //         res.status(500).json({error:"Internal Server Error"})
 //     }
 // }
+
+// Handele register clients
 exports.register = async function (req, res, next) {
     
-    console.log(req.file.path)
+    // console.log(req.file.path)
   
     try {
       const imgUpload = await cloudinary.uploader.upload(
@@ -24,24 +29,25 @@ exports.register = async function (req, res, next) {
       console.log(imgUpload.secure_url);
   
       const newClient = new Client({
-        fname: req.body.fname,
-        lname: req.body.lname,
-        email: req.body.email, 
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        client_email: req.body.client_email, 
         phone_no: req.body.phone_no, 
         project_id: req.body.project_id, 
-        desc: req.body.desc, 
-        pro_pic: req.body.pro_pic
+        client_Desc: req.body.client_Desc, 
+        // pro_pic: imgUpload.secure_url
       });
+      console.log(newClient,"my new client")
   
 
 
       Client.createClient(newClient)
       .then(data => {
-        return res.status(200).json({ success: "Success",  data});
+        return res.status(200).json({ success: "Success",  message:data.message});
       })
       .catch(err => {
         console.log(err);
-        res.status(500).send({success: "not success"});
+        res.status(500).send({success: "not success",message:err.message});
       });
 
 
@@ -63,11 +69,11 @@ exports.getAll = async (req,res) => {
 
 // Handle fetching a patient by ID
 exports.getClientById = async (req, res) => {
-    const clientId = req.params.clientId;
+    const client_id = req.params.client_id;
 
     try {
         // console.log('req id',userId)
-        const patient = await Client.getClientById(clientId);
+        const patient = await Client.getClientById(client_id);
         if (!patient) {
             return res.status(404).json({ error: "User not found" });
         }else
@@ -100,18 +106,19 @@ exports.getClientById = async (req, res) => {
 // Handle updating a Client by ID
 exports.editClient = async (req, res) => {
     
-    let clientId = req.params.clientId;
+    let client_id = req.params.client_id;
     // let Client1 = req.body;
 
-    let {patient1Id, ...Client1} = req.body;
-    const existingRecord = await Client.getClientById(clientId); 
-    let Client = Client1;
-    // console.log(existingRecord.clientId,">>>>>>>>>>>>>>>>>>>>>>DDDDDDDDDDDDDDDD")
+    let updateClientData = req;
+    console.log(updateClientData)
+    const existingRecord = await Client.getClientById(client_id); 
+    // let Client = Client1;
+    console.log(existingRecord.client_id,">>>>>>>>>>>>>>>>>>>>>>DDDDDDDDDDDDDDDD",parseInt(existingRecord.client_id))
 
-    if(parseInt(clientId)===parseInt(existingRecord.clientId)){
+    if(parseInt(client_id)===parseInt(existingRecord.client_id)){
         try {
-            const result = await Client.updateClient(clientId,Client);
-            let updatedClient = await Client.getClientById(clientId);
+            const result = await Client.editClient(client_id,updateClientData);
+            let updatedClient = await Client.getClientById(client_id);
             res.status(200).json({ message: result.message,updatedClient });
         } catch (error) {
             console.error("Error updating user:");
@@ -124,23 +131,23 @@ exports.editClient = async (req, res) => {
 
 //  delete user by ID
 exports.deleteClient = async (req, res) => {
-    let clientId = req.params.clientId;
+    let client_id = req.params.client_id;
     
-    const existingRecord = await Client.getClientById(clientId); 
+    const existingRecord = await Client.getClientById(client_id); 
 
-    if (clientId === null){
-        console.log("clientId = Undefoned"); 
+    if (client_id === null){
+        console.log("client_id = Undefoned"); 
         return res.status(404).json({ error: "User not found" });
-    }else if (clientId == parseInt(existingRecord.clientId)){
-        console.log("clientId is defoned",clientId)
+    }else if (client_id == parseInt(existingRecord.client_id)){
+        console.log("client_id is defoned",client_id)
         try {
-            const result = await Client.deleteClient(clientId);
+            const result = await Client.deleteClient(client_id);
             res.status(200).json({ message: result.message });
         } catch (error) {
             console.error("Error deleting user:", error);
             res.status(500).json({ error: "Internal Server Error" });
         };
     }
-    return clientId;
+    return client_id;
 };
 

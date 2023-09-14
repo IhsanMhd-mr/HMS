@@ -8,12 +8,12 @@ exports.registerClient = async (Client) => {
         
         const query = `INSERT INTO ${table_name} (firstName, lastName, client_email,  phone_no, project_id, client_Desc, pro_pic) VALUES (?,?,?,?,?,?,?)`;
         const [results] = await pool.query(query, [
-            Client.fname, 
-            Client.lname,          
-            Client.email, 
+            Client.firstName, 
+            Client.lastName,          
+            Client.client_email, 
             Client.phone_no, 
             Client.project_id, 
-            Client.desc, 
+            Client.client_Desc, 
             Client.pro_pic
         ]);
 
@@ -23,7 +23,9 @@ exports.registerClient = async (Client) => {
         console.error('Error registering client:', error.message);
         
         if (error.code === 'ER_DUP_ENTRY') {
-            return { success: false, message: 'Client email already exists in database' };
+            const errMessage = { success: false, message: 'Client email already exists in database' };
+            throw(errMessage)
+            return errMessage
         }
         
         return { success: false, message: 'An error occurred during client registration :'+ error };
@@ -39,8 +41,8 @@ exports.getAllClients = async () => {
     try {
         console.log('getall query')
         let [results] = await pool.query(query);
-        let [x] = results
-        console.log(x)
+        // let [x] = results
+        // console.log(x)
         return { success: true, message: 'Client recieved successfully', 'results':results };;
     } catch (error) {
         console.error('Error fetching all Clients:', error.message);
@@ -74,14 +76,14 @@ exports.updateClientById = async (clientId, Client) => {
     SET firstName = ?, lastName = ?,   email = ?,  phone_no = ?, project_id = ?, client_Desc = ?,   pro_pic=?,   
     WHERE client_id = ?`;
     try {
-        // console.log(Client.name, Client.email, Client.password, ClientId);
+        // console.log(Client.name, Client.client_email, Client.password, ClientId);
         const results = await pool.query(query, [
-            Client.fname, 
-            Client.lname,          
-            Client.email, 
+            Client.firstName, 
+            Client.lastName,          
+            Client.client_email, 
             Client.phone_no, 
             Client.project_id, 
-            Client.desc, 
+            Client.client_Desc, 
             Client.pro_pic,
 
             clientId
@@ -92,7 +94,7 @@ exports.updateClientById = async (clientId, Client) => {
             return { success: false, message: 'Client not found' };
         } else {
             // Successful update
-            // console.log(Client.name, Client.email, Client.password, ClientId, 'in queryfunc');
+            // console.log(Client.name, Client.client_email, Client.password, ClientId, 'in queryfunc');
             return { success: true, message: 'Client updated successfully', clientId };
         }
     } catch (error) {

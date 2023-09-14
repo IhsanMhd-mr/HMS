@@ -22,14 +22,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/projects', require('./routes/projects.js'));
 app.use('/clients', require('./routes/clients.js'));
 
-// const randomNo = async (req,res) =>  {
-//   let X = Math.random()*10;
-//   console.log(X)
-// }
-// app.use('/rand',randomNo);
-
-
-// app.use('/rand', randNo);
 
 // Start the server
 const PORT = process.env.PORT;

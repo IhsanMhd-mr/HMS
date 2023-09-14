@@ -23,9 +23,9 @@ const app = express();
 
 
 const Client = function (ClientData) {
-    this.fname = ClientData.fname, 
-    this.lname = ClientData.lname,          
-    this.email = ClientData.email, 
+    this.firstName = ClientData.firstName, 
+    this.lastName = ClientData.lastName,          
+    this.client_email = ClientData.client_email, 
     this.phone_no = ClientData.phone_no, 
     this.project_id = ClientData.project_id, 
     this.desc = ClientData.desc, 
@@ -41,7 +41,7 @@ Client.createClient = async (Client) => {
     console.log(addResults,"results added");
     return { message: "Client Created successfully" };
   } catch (error) {
-    console.log(error);
+    console.log(error,"this...................");
     throw error;
   }
 };
@@ -51,7 +51,7 @@ Client.editClient = async (clientId,Client) => {
     const existingClient = await clients_query.getClientById(clientId);
     console.log(existingClient,"existingClient")
     if (existingClient ) {
-      console.log(Client,"puuuuuuuuuuuuuuuuuuuuuuuuuunnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnddddddddddddddddddddddddaaaaaaaaaaaaa")
+      console.log(Client,"puuuuuuuuuuuuuuuuuuuuuuuuuunnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
       await clients_query.updateClientById(clientId,Client); // Check query ==>>>
       return { message: "Client Updated Successfully" };
     } else {
@@ -112,7 +112,7 @@ Client.getClientById = async (clientId) => {
 Client.getAllClients = async () => {
     try {
       const existingClients = await clients_query.getAllClients();
-      console.log(existingClients.results,"cccccccccccccccccccccc")
+      // console.log(existingClients.results,"cccccccccccccccccccccc")
       return existingClients;
     } catch (error) {
        throw error;
